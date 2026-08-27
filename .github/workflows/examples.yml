@@ -32,7 +32,7 @@ jobs:
         # moved this morning. The weekly run below is the one that catches drift:
         # bump this when a release changes what `stack wire` writes, and the diff
         # in that same commit says what changed.
-        run: go install github.com/rigsmith/rigsmith/cmd/rig@v1.9.0
+        run: go install github.com/rigsmith/rigsmith/cmd/rig@v1.10.0
 
       - name: dotnet — wire reproduces the committed overlay
         run: ./scripts/check-example.sh dotnet Directory.Build.targets
