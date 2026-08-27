@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- The identity a consumer references, which is not always the file name.
+         Matching on the file name is the classic way to redirect the wrong
+         package: MSBuild splits it at the last dot. -->
+    <PackageId>Acme.Pty.Core</PackageId>
+  </PropertyGroup>
+</Project>

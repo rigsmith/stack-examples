@@ -1,0 +1,5 @@
+{
+  "name": "term-app-stackspace",
+  "private": true,
+  "description": "Layout only: see README.md. The build wiring for npm is not implemented yet."
+}

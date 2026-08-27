@@ -1,0 +1,15 @@
+{
+  "$schema": "https://rigsmith.dev/schemas/rig-stack.json",
+
+  "repos": {
+    "lib": {
+      "upstream": "github.com/acme/pty-core",
+      "fork": "github.com/you/pty-core"
+    },
+    "app": {
+      "upstream": "github.com/you/term-app",
+      "fork": "github.com/you/term-app",
+      "owned": true
+    }
+  }
+}

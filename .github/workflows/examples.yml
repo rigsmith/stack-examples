@@ -1,0 +1,51 @@
+# Every example is checked, not just written down: `rig stack wire` has to
+# reproduce the file committed beside it, and the app has to build against the
+# result. An example that stops working fails here rather than wasting an
+# afternoon of somebody else's time.
+name: examples
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # rig moves; these examples should fail when it changes under them, not the
+    # next time somebody happens to try one.
+    - cron: "0 6 * * 1"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.x"
+
+      - name: Install rig
+        # From main, not @latest: `stack wire` and `stack add` are newer than the
+        # last release, so @latest cannot check these examples at all. Pin this
+        # to a tag once a release carries them — tracking main is what makes the
+        # weekly run useful in the meantime, since it fails when rig changes
+        # under the examples rather than when someone next tries one.
+        run: go install github.com/rigsmith/rigsmith/cmd/rig@main
+
+      - name: dotnet — wire reproduces the committed overlay
+        run: ./scripts/check-example.sh dotnet Directory.Build.targets
+
+      - name: dotnet — the app builds against the redirected sources
+        run: dotnet build dotnet/app/src/Term.App/Term.App.csproj
+
+      - name: go — wire reproduces the committed go.work
+        run: ./scripts/check-example.sh go go.work
+
+      - name: go — the app builds with the proxy off
+        # Only a local resolution can succeed here, so this is the assertion
+        # that the redirect actually took effect rather than merely existing.
+        working-directory: go/app
+        run: GOPROXY=off go build ./...
