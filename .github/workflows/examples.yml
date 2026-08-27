@@ -28,12 +28,11 @@ jobs:
           dotnet-version: "10.x"
 
       - name: Install rig
-        # From main, not @latest: `stack wire` and `stack add` are newer than the
-        # last release, so @latest cannot check these examples at all. Pin this
-        # to a tag once a release carries them — tracking main is what makes the
-        # weekly run useful in the meantime, since it fails when rig changes
-        # under the examples rather than when someone next tries one.
-        run: go install github.com/rigsmith/rigsmith/cmd/rig@main
+        # Pinned, so a failure here means an example broke rather than that rig
+        # moved this morning. The weekly run below is the one that catches drift:
+        # bump this when a release changes what `stack wire` writes, and the diff
+        # in that same commit says what changed.
+        run: go install github.com/rigsmith/rigsmith/cmd/rig@v1.9.0
 
       - name: dotnet — wire reproduces the committed overlay
         run: ./scripts/check-example.sh dotnet Directory.Build.targets
